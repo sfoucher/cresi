@@ -4,7 +4,8 @@
 # jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --port=9111
 # back on local machine, invoke the following in a web browser: https://localhost:9111
 
-FROM nvidia/cuda:10.0-cudnn7-devel
+FROM nvidia/cuda:9.2-devel-ubuntu16.04
+# FROM nvidia/cuda:10.0-cudnn7-devel
 MAINTAINER avanetten
 
 ENV CUDNN_VERSION 7.3.0.29
@@ -21,29 +22,29 @@ RUN apt-get update && apt-get install -y --no-install-recommends \
 # install requirements
 RUN apt-get update \
   && apt-get install -y --no-install-recommends \
-    apt-utils \
-    bc \
-    bzip2 \
-    ca-certificates \
-    curl \
-    git \
-    libgdal-dev \
-    libssl-dev \
-    libffi-dev \
-    libncurses-dev \
-    libgl1 \
-    jq \
-    nfs-common \
-    parallel \
-    python-dev \
-    python-pip \
-    python-wheel \
-    python-setuptools \
-    unzip \
-    vim \
+	apt-utils \
+	bc \
+	bzip2 \
+	ca-certificates \
+	curl \
+	git \
+	libgdal-dev \
+	libssl-dev \
+	libffi-dev \
+	libncurses-dev \
+	libgl1 \
+	jq \
+	nfs-common \
+	parallel \
+	python-dev \
+	python-pip \
+	python-wheel \
+	python-setuptools \
+	unzip \
+	vim \
 	tmux \
-    wget \
-    build-essential \
+	wget \
+	build-essential \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/*
 
@@ -62,7 +63,7 @@ RUN wget --quiet https://repo.anaconda.com/miniconda/Miniconda3-4.5.4-Linux-x86_
 ENV TINI_VERSION v0.16.1
 ADD https://github.com/krallin/tini/releases/download/${TINI_VERSION}/tini /usr/bin/tini
 RUN chmod +x /usr/bin/tini
-RUN ipython3 kernel install
+# RUN ipython3 kernel install
 
 # use conda-forge instead of default channel
 RUN conda update conda && \
@@ -81,46 +82,47 @@ RUN pip install torch-0.3.0.post4-cp36-cp36m-linux_x86_64.whl \
  	&& pip install tensorboardX \
 	&& pip install torchsummary \
 	&& pip install utm \
-	&& pip install numba=0.45
+	&& pip install numba \
+	&& pip install imagecodecs
 			  
 RUN conda install -n cresi \
-			  gdal=2.4.2 \
-		   	  geopandas=0.6.3 \
-			  fiona \
-			  rasterio \
-              osmnx=0.12 \
-			  networkx=2.2 \ 
-     	      awscli \
-              affine \
-              pyproj \
-              pyhamcrest \
-              cython \
-              fiona \
-              h5py \
-              ncurses \
-              jupyter \
-              jupyterlab \
-              ipykernel \
-              libgdal \
-              matplotlib \
-	          ncurses \
-              numpy \
-			  statsmodels \
-              pandas \
-              pillow \
-              pip \
-              scipy \
-              scikit-image \
-              scikit-learn \
-              shapely \
-              rtree \
-              testpath \
-              tqdm \
-              pandas \
-			  opencv \
-              jupyter \
-              jupyterlab \
-              ipykernel \
+		gdal=2.4.2 \
+		geopandas=0.6.3 \
+		fiona \
+		rasterio \
+		osmnx=0.12 \
+		networkx=2.2 \ 
+		awscli \
+		affine \
+		pyproj \
+		pyhamcrest \
+		cython \
+		fiona \
+		h5py \
+		ncurses \
+		jupyter \
+		jupyterlab \
+		ipykernel \
+		libgdal \
+		matplotlib \
+		ncurses \
+		numpy \
+		statsmodels \
+		pandas \
+		pillow \
+		pip \
+		scipy \
+		scikit-image \
+		scikit-learn \
+		shapely \
+		rtree \
+		testpath \
+		tqdm \
+		pandas \
+		opencv \
+		jupyter \
+		jupyterlab \
+		ipykernel \
 	&& conda clean -p \
 	&& conda clean -t \
 	&& conda clean --yes --all
