@@ -1,4 +1,4 @@
-# docker build -t cresi_v3_image .
+# docker build -f Dockerfile.torch -t cresi_v3_image .
 # docker run -it --rm --gpus all --ipc=host -v /home/sfoucher/DEV/cresi:/workspace/ -p 9111:9111 cresi_v3_image bash
 # To use jupyter notebook, inside container run:
 # jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --port=9111
