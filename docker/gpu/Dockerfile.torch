@@ -1,0 +1,61 @@
+# docker build -t cresi_v3_image .
+# docker run -it --rm --gpus all --ipc=host -v /home/sfoucher/DEV/cresi:/workspace/ -p 9111:9111 cresi_v3_image bash
+# To use jupyter notebook, inside container run:
+# jupyter notebook --ip 0.0.0.0 --no-browser --allow-root --port=9111
+# back on local machine, invoke the following in a web browser: https://localhost:9111
+
+FROM pytorch/pytorch:1.0-cuda10.0-cudnn7-runtime # comes with python (conda) 3.6
+
+RUN apt-get update && apt-get install -y \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+RUN conda update conda && \
+    conda update --all --yes
+
+RUN mkdir -p /root/.torch/models
+RUN wget https://download.pytorch.org/models/resnet34-333f7ec4.pth -P /root/.torch/models
+			  
+RUN conda install \
+		gdal>=2.4.2 \
+		geopandas>=0.6.3 \
+		fiona \
+		rasterio \
+		osmnx>=0.12 \
+		networkx>=2.2 \ 
+		awscli \
+		affine \
+		pyproj \
+		pyhamcrest \
+		cython \
+		fiona \
+		h5py \
+		ncurses \
+		jupyter \
+		jupyterlab \
+		ipykernel \
+		libgdal \
+		matplotlib \
+		ncurses \
+		numpy \
+		statsmodels \
+		pandas \
+		pillow \
+		pip \
+		scipy \
+		scikit-image \
+		scikit-learn \
+		shapely \
+		rtree \
+		testpath \
+		tqdm \
+		pandas \
+		opencv \
+		jupyter \
+		jupyterlab \
+		ipykernel \
+	&& conda clean -p \
+	&& conda clean -t \
+	&& conda clean --yes --all
+
+CMD ["python", "--version"]
